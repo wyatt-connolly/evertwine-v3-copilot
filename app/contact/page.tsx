@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { sendContactEmail } from "@/app/actions/send-contact-email"
 import Footer from "@/components/layout/Footer"
-import { ArrowRight, CheckCircle, Loader2 } from "lucide-react"
+import { ArrowRight, CheckCircle, Loader2, AlertTriangle } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
@@ -60,14 +60,73 @@ export default function ContactPage() {
         )
       case "Delete Account/Data":
         return (
-          <div>
-            <p className="mb-2 font-medium text-yellow-300">⚠️ Account Deletion Request</p>
-            <ul className="list-disc list-inside space-y-1">
-              <li>Your account email address</li>
-              <li>Confirmation that you want to permanently delete your account</li>
-              <li>Reason for deletion (optional but helpful)</li>
-              <li>Note: This action cannot be undone and will remove all your data</li>
-            </ul>
+          <div className="space-y-4">
+            <div className="flex items-start space-x-3 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+              <AlertTriangle className="h-6 w-6 text-red-400 flex-shrink-0 mt-0.5" />
+              <div>
+                <h5 className="font-semibold text-red-300 mb-1">Account Deletion Request for Evertwine</h5>
+                <p className="text-red-200 text-sm">
+                  This action will permanently delete your Evertwine account and cannot be undone.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+              <h5 className="font-semibold text-yellow-300 mb-3">Steps to Request Account Deletion:</h5>
+              <ol className="list-decimal list-inside space-y-2 text-yellow-100 text-sm">
+                <li>Include your registered email address in the message below</li>
+                <li>Write "DELETE MY ACCOUNT" in the message to confirm your request</li>
+                <li>Provide a reason for deletion (optional but helpful for improving our service)</li>
+                <li>Submit this form - our team will process your request within 48 hours</li>
+                <li>You will receive a confirmation email once your account is deleted</li>
+              </ol>
+            </div>
+
+            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+              <h5 className="font-semibold text-blue-300 mb-3">Data Deletion & Retention Policy:</h5>
+
+              <div className="space-y-3 text-sm">
+                <div>
+                  <h6 className="font-medium text-blue-200 mb-1">Data That Will Be Deleted Immediately:</h6>
+                  <ul className="list-disc list-inside space-y-1 text-blue-100 ml-2">
+                    <li>Profile information (name, bio, photos)</li>
+                    <li>Account preferences and settings</li>
+                    <li>Meetup history and RSVPs</li>
+                    <li>Messages and communications</li>
+                    <li>Location data and check-ins</li>
+                    <li>Verification photos and documents</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h6 className="font-medium text-blue-200 mb-1">Data Retained for Legal/Safety Purposes (90 days):</h6>
+                  <ul className="list-disc list-inside space-y-1 text-blue-100 ml-2">
+                    <li>Safety reports and moderation records</li>
+                    <li>Transaction records (if applicable)</li>
+                    <li>Backup copies in secure storage</li>
+                  </ul>
+                  <p className="text-blue-200 text-xs mt-2 italic">
+                    This data is kept for safety, legal compliance, and fraud prevention, then permanently deleted after
+                    90 days.
+                  </p>
+                </div>
+
+                <div>
+                  <h6 className="font-medium text-blue-200 mb-1">Anonymized Analytics Data:</h6>
+                  <p className="text-blue-100 ml-2">
+                    Some usage statistics may be retained in anonymized form for product improvement, but cannot be
+                    linked back to your identity.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center p-3 bg-gray-500/10 border border-gray-500/30 rounded-lg">
+              <p className="text-gray-300 text-sm">
+                <strong>Need help instead of deletion?</strong> Consider contacting us about account issues first -
+                we're here to help resolve any problems you're experiencing with Evertwine.
+              </p>
+            </div>
           </div>
         )
       case "Business Partnership":
@@ -256,7 +315,7 @@ export default function ContactPage() {
       {/* Contact Section */}
       <section className="pt-[110px] md:pt-[130px] pb-20 px-4 md:px-8">
         <motion.div
-          className="container mx-auto max-w-3xl"
+          className="container mx-auto max-w-4xl"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -405,12 +464,20 @@ export default function ContactPage() {
 
                 {selectedSubject && (
                   <motion.div
-                    className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4"
+                    className={`border rounded-lg p-4 ${
+                      selectedSubject === "Delete Account/Data"
+                        ? "bg-red-500/5 border-red-500/20"
+                        : "bg-blue-500/10 border-blue-500/30"
+                    }`}
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     transition={{ duration: 0.3 }}
                   >
-                    <h4 className="text-white font-medium mb-2">What to include in your message:</h4>
+                    <h4 className="text-white font-medium mb-2">
+                      {selectedSubject === "Delete Account/Data"
+                        ? "Account Deletion Information:"
+                        : "What to include in your message:"}
+                    </h4>
                     <div className="text-white/80 text-sm">{getSubjectInfo(selectedSubject)}</div>
                   </motion.div>
                 )}
@@ -423,9 +490,13 @@ export default function ContactPage() {
                     id="message"
                     name="message"
                     required
-                    rows={5}
+                    rows={selectedSubject === "Delete Account/Data" ? 4 : 5}
                     className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300"
-                    placeholder="Your message here..."
+                    placeholder={
+                      selectedSubject === "Delete Account/Data"
+                        ? "Please include your registered email address and write 'DELETE MY ACCOUNT' to confirm your request..."
+                        : "Your message here..."
+                    }
                     onFocus={() => setFocusedField("message")}
                     onBlur={() => setFocusedField(null)}
                   ></textarea>

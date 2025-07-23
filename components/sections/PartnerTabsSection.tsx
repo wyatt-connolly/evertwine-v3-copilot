@@ -411,6 +411,22 @@ export default function PartnerTabsSection({ isVisible }: PartnerTabsSectionProp
                     with you to design a partnership that delivers results.
                   </p>
                 </div>
+                <div className="mt-6 p-6 bg-green-500/10 border border-green-500/20 rounded-xl">
+                  <h4 className="text-xl font-semibold text-white mb-2 font-sora">Ready to Get Started?</h4>
+                  <p className="text-white/70 font-dm-sans mb-4">
+                    Visit our dedicated business portal to learn more about partnership opportunities and get started
+                    today.
+                  </p>
+                  <a
+                    href="https://business.evertwine.social"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors font-medium"
+                  >
+                    Visit Business Portal
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>

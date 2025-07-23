@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Twitter } from "lucide-react"
+import { Twitter, Linkedin } from "lucide-react"
 
 interface FooterProps {
   isHomepage?: boolean
@@ -55,6 +55,15 @@ export default function Footer({ isHomepage = false }: FooterProps) {
                 >
                   <Twitter className="w-5 h-5" />
                   <span className="sr-only">X (Twitter)</span>
+                </a>
+                <a
+                  href="https://www.linkedin.com/company/evertwine"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <Linkedin className="w-5 h-5" />
+                  <span className="sr-only">LinkedIn</span>
                 </a>
                 <a
                   href="https://www.reddit.com/r/Evertwine/"
@@ -203,6 +212,15 @@ export default function Footer({ isHomepage = false }: FooterProps) {
               >
                 <Twitter className="w-5 h-5" />
                 <span className="sr-only">X (Twitter)</span>
+              </a>
+              <a
+                href="https://www.linkedin.com/company/evertwine"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <Linkedin className="w-5 h-5" />
+                <span className="sr-only">LinkedIn</span>
               </a>
               <a
                 href="https://www.reddit.com/r/Evertwine/"
