@@ -45,19 +45,17 @@ export default function HeroSection({ isLoaded }: HeroSectionProps) {
               isLoaded ? "animate-fade-in-up" : ""
             }`}
           >
-            Genuine.
+            A Simple Way to
             <br />
-            Local.
-            <br />
-            Effortless.
+            Find Your People
           </h1>
           <p
             className={`text-white/80 text-base sm:text-lg mt-4 sm:mt-6 max-w-2xl font-light opacity-0 font-dm-sans ${
               isLoaded ? "animate-fade-in-up-delayed" : ""
             }`}
           >
-            Meet people near you through real, in-person meetups. Whether you're looking for friends or business
-            connections, Evertwine helps you find your community—safely and authentically.
+            Discover real-world connections through interest-based meetups near you. Whether it's for friendship,
+            networking, or both—Evertwine makes it easy and local.
           </p>
           <div
             className={`mt-6 sm:mt-8 flex flex-col sm:flex-row gap-4 opacity-0 ${isLoaded ? "animate-fade-in-up-more-delayed" : ""}`}
@@ -88,15 +86,15 @@ export default function HeroSection({ isLoaded }: HeroSectionProps) {
                 isLoaded ? "animate-fade-in-up" : ""
               }`}
             >
-              Genuine. Local. Effortless.
+              A Simple Way to Find Your People
             </h1>
             <p
               className={`text-white/80 text-xl mt-6 max-w-2xl font-light opacity-0 font-dm-sans ${
                 isLoaded ? "animate-fade-in-up-delayed" : ""
               }`}
             >
-              Meet people near you through real, in-person meetups. Whether you're looking for friends or business
-              connections, Evertwine helps you find your community—safely and authentically.
+              Discover real-world connections through interest-based meetups near you. Whether it's for friendship,
+              networking, or both—Evertwine makes it easy and local.
             </p>
             <div className={`mt-10 flex gap-6 opacity-0 ${isLoaded ? "animate-fade-in-up-more-delayed" : ""}`}>
               <a

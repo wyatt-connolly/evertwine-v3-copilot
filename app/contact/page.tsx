@@ -14,6 +14,7 @@ export default function ContactPage() {
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [focusedField, setFocusedField] = useState<string | null>(null)
+  const [selectedSubject, setSelectedSubject] = useState("")
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,6 +31,97 @@ export default function ContactPage() {
     }
   }, [])
 
+  const getSubjectInfo = (subject: string) => {
+    switch (subject) {
+      case "General Inquiry":
+        return (
+          <ul className="list-disc list-inside space-y-1">
+            <li>Your question or topic of interest</li>
+            <li>Any relevant background information</li>
+          </ul>
+        )
+      case "Technical Support":
+        return (
+          <ul className="list-disc list-inside space-y-1">
+            <li>Device type and operating system version</li>
+            <li>App version (if applicable)</li>
+            <li>Detailed description of the issue</li>
+            <li>Steps you've already tried to resolve it</li>
+          </ul>
+        )
+      case "Account Issues":
+        return (
+          <ul className="list-disc list-inside space-y-1">
+            <li>Your account email address</li>
+            <li>Description of the account problem</li>
+            <li>When the issue started</li>
+            <li>Any error messages you've received</li>
+          </ul>
+        )
+      case "Delete Account/Data":
+        return (
+          <div>
+            <p className="mb-2 font-medium text-yellow-300">⚠️ Account Deletion Request</p>
+            <ul className="list-disc list-inside space-y-1">
+              <li>Your account email address</li>
+              <li>Confirmation that you want to permanently delete your account</li>
+              <li>Reason for deletion (optional but helpful)</li>
+              <li>Note: This action cannot be undone and will remove all your data</li>
+            </ul>
+          </div>
+        )
+      case "Business Partnership":
+        return (
+          <ul className="list-disc list-inside space-y-1">
+            <li>Your business name and type</li>
+            <li>Location of your business</li>
+            <li>How you'd like to partner with Evertwine</li>
+            <li>Your contact information</li>
+          </ul>
+        )
+      case "Safety Concerns":
+        return (
+          <div>
+            <p className="mb-2 font-medium text-red-300">🚨 Safety Report</p>
+            <ul className="list-disc list-inside space-y-1">
+              <li>Detailed description of the safety concern</li>
+              <li>Date and time of incident (if applicable)</li>
+              <li>Username or profile information of involved parties</li>
+              <li>Any screenshots or evidence (attach separately)</li>
+            </ul>
+          </div>
+        )
+      case "Feature Request":
+        return (
+          <ul className="list-disc list-inside space-y-1">
+            <li>Detailed description of the requested feature</li>
+            <li>How this feature would benefit users</li>
+            <li>Any examples from other apps (if applicable)</li>
+          </ul>
+        )
+      case "Bug Report":
+        return (
+          <ul className="list-disc list-inside space-y-1">
+            <li>Device type and operating system version</li>
+            <li>App version</li>
+            <li>Steps to reproduce the bug</li>
+            <li>Expected vs. actual behavior</li>
+            <li>Screenshots or screen recordings (if helpful)</li>
+          </ul>
+        )
+      case "Other":
+        return (
+          <ul className="list-disc list-inside space-y-1">
+            <li>Clear description of your inquiry</li>
+            <li>Any relevant details or context</li>
+            <li>How we can best assist you</li>
+          </ul>
+        )
+      default:
+        return null
+    }
+  }
+
   async function handleSubmit(formData: FormData) {
     setIsSubmitting(true)
     setError(null)
@@ -38,12 +130,13 @@ export default function ContactPage() {
       const result = await sendContactEmail({
         name: formData.get("name") as string,
         email: formData.get("email") as string,
-        subject: formData.get("subject") as string,
+        subject: selectedSubject,
         message: formData.get("message") as string,
       })
 
       if (result.success) {
         setIsSuccess(true)
+        setSelectedSubject("") // Add this line
         // Reset form
         const form = document.getElementById("contact-form") as HTMLFormElement
         if (form) form.reset()
@@ -260,17 +353,67 @@ export default function ContactPage() {
                   <label htmlFor="subject" className="block text-white/90 mb-2 font-medium">
                     Subject
                   </label>
-                  <input
-                    type="text"
+                  <select
                     id="subject"
                     name="subject"
                     required
-                    className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300"
-                    placeholder="What's this about?"
+                    className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-300 appearance-none"
+                    style={{
+                      backgroundImage:
+                        "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24' stroke='white'%3E%3Cpath strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E\")",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "right 1rem center",
+                      backgroundSize: "1.5em 1.5em",
+                    }}
                     onFocus={() => setFocusedField("subject")}
                     onBlur={() => setFocusedField(null)}
-                  />
+                    onChange={(e) => setSelectedSubject(e.target.value)}
+                    value={selectedSubject}
+                  >
+                    <option value="" disabled className="bg-gray-900">
+                      Select a topic
+                    </option>
+                    <option value="General Inquiry" className="bg-gray-900">
+                      General Inquiry
+                    </option>
+                    <option value="Technical Support" className="bg-gray-900">
+                      Technical Support
+                    </option>
+                    <option value="Account Issues" className="bg-gray-900">
+                      Account Issues
+                    </option>
+                    <option value="Delete Account/Data" className="bg-gray-900">
+                      Delete Account/Data
+                    </option>
+                    <option value="Business Partnership" className="bg-gray-900">
+                      Business Partnership
+                    </option>
+                    <option value="Safety Concerns" className="bg-gray-900">
+                      Safety Concerns
+                    </option>
+                    <option value="Feature Request" className="bg-gray-900">
+                      Feature Request
+                    </option>
+                    <option value="Bug Report" className="bg-gray-900">
+                      Bug Report
+                    </option>
+                    <option value="Other" className="bg-gray-900">
+                      Other
+                    </option>
+                  </select>
                 </motion.div>
+
+                {selectedSubject && (
+                  <motion.div
+                    className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <h4 className="text-white font-medium mb-2">What to include in your message:</h4>
+                    <div className="text-white/80 text-sm">{getSubjectInfo(selectedSubject)}</div>
+                  </motion.div>
+                )}
 
                 <motion.div variants={formFieldVariants} animate={focusedField === "message" ? "focused" : "visible"}>
                   <label htmlFor="message" className="block text-white/90 mb-2 font-medium">
